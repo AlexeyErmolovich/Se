@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Секрет Твоего Имени</string>
+    <string name="tab_name_search">Поиск</string>
+    <string name="tab_favorite">Избранное</string>
+    <string name="tab_all">Все</string>
+    <string name="text_count">Количество</string>
+    <string name="data_not_available">Данные отсутствуют!</string>
+
+</resources>
