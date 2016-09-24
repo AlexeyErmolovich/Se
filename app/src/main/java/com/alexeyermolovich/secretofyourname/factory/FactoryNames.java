@@ -11,6 +11,7 @@ import com.alexeyermolovich.secretofyourname.model.FullNameObject;
 import com.alexeyermolovich.secretofyourname.model.NameObject;
 import com.alexeyermolovich.secretofyourname.model.NameObjectDao;
 import com.alexeyermolovich.secretofyourname.model.NameObjectDaoDao;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ public class FactoryNames {
     private FullNameObject nameObject;
 
     private SQLiteDatabase sqLiteDatabase;
+    private Gson gson;
 
     private OnGetNameListListener onGetNameListListener;
     private OnGetNameListener onGetNameListener;
@@ -56,6 +58,7 @@ public class FactoryNames {
     public FactoryNames(Context context) {
         this.listNames = new ArrayList<>();
         this.listFavorite = new ArrayList<>();
+        this.gson = new Gson();
         this.jsonNames = readJsonFromFile(context);
     }
 
@@ -99,16 +102,7 @@ public class FactoryNames {
                     JSONArray jsonArray = jsonNames.getJSONArray("names");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String name = null;
-                        String sex = null;
-                        if (jsonObject.has(FIELD_NAME)) {
-                            name = jsonObject.getString(FIELD_NAME);
-                        }
-                        if (jsonObject.has(FIELD_SEX)) {
-                            sex = jsonObject.getString(FIELD_SEX);
-                        }
-                        NameObject nameObject = new NameObject(name, sex);
-                        subscriber.onNext(nameObject);
+                        subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
                     }
                     subscriber.onCompleted();
                 } catch (Exception e) {
@@ -171,6 +165,38 @@ public class FactoryNames {
     }
     /*End All Names*/
 
+    /*Favorite Names*/
+    public void loadFavoriteNames() {
+        NameObjectDaoDao nameObjectDaoDao = openDao();
+        List<NameObjectDao> nameObjectDaos = nameObjectDaoDao.loadAll();
+        listFavorite.clear();
+        for (NameObjectDao nameObjectDao : nameObjectDaos) {
+            listFavorite.add(new NameObject(nameObjectDao.getName(), nameObjectDao.getSex()));
+        }
+        Collections.sort(listFavorite, new Comparator<NameObject>() {
+            @Override
+            public int compare(NameObject o1, NameObject o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        if (onGetFavoriteNamesListener != null) {
+            onGetFavoriteNamesListener.onGetFavoriteNames(true);
+        }
+    }
+
+    public List<NameObject> getListFavoriteNames() {
+        return this.listFavorite;
+    }
+
+    public void setOnGetFavoriteNamesListener(OnGetFavoriteNamesListener onGetFavoriteNamesListener) {
+        this.onGetFavoriteNamesListener = onGetFavoriteNamesListener;
+    }
+
+    public interface OnGetFavoriteNamesListener {
+        void onGetFavoriteNames(boolean isSuccess);
+    }
+    /*End Favorite Names*/
+
     /*Load Name*/
     public void setOnGetNameListener(OnGetNameListener onGetNameListener) {
         this.onGetNameListener = onGetNameListener;
@@ -201,20 +227,8 @@ public class FactoryNames {
                 }
             }
 
-            private FullNameObject initFullNameObject(JSONObject jsonObject) throws JSONException {
-                FullNameObject fullNameObject = null;
-
-                String name = null;
-                String sex = null;
-                if (jsonObject.has(FIELD_NAME)) {
-                    name = jsonObject.getString(FIELD_NAME);
-                }
-                if (jsonObject.has(FIELD_SEX)) {
-                    sex = jsonObject.getString(FIELD_SEX);
-                }
-                fullNameObject = new FullNameObject(name, sex);
-
-                return fullNameObject;
+            private FullNameObject initFullNameObject(JSONObject jsonObject) {
+                return gson.fromJson(jsonObject.toString(), FullNameObject.class);
             }
         });
 
@@ -254,11 +268,11 @@ public class FactoryNames {
         };
     }
 
-    public void addFavorite(NameObjectDao nameObjectDao) {
+    public void addFavorite(NameObject nameObject) {
         NameObjectDaoDao nameObjectDaoDao = openDao();
-        NameObjectDao load = nameObjectDaoDao.load(nameObjectDao.getName());
+        NameObjectDao load = nameObjectDaoDao.load(nameObject.getName());
         if (load == null) {
-            nameObjectDaoDao.insert(nameObjectDao);
+            nameObjectDaoDao.insert(new NameObjectDao(nameObject.getName(), nameObject.getSexByte()));
             closeDao();
         }
         if (onGetNameListener != null) {
@@ -267,9 +281,9 @@ public class FactoryNames {
         loadFavoriteNames();
     }
 
-    public void deleteFavorite(NameObjectDao nameObjectDao) {
+    public void deleteFavorite(NameObject nameObject) {
         NameObjectDaoDao nameObjectDaoDao = openDao();
-        nameObjectDaoDao.delete(nameObjectDao);
+        nameObjectDaoDao.delete(new NameObjectDao(nameObject.getName(), nameObject.getSexByte()));
         closeDao();
         if (onGetNameListener != null) {
             onGetNameListener.onGetFavorite(false);
@@ -283,38 +297,30 @@ public class FactoryNames {
 
         void onGetName(FullNameObject nameObject);
     }
-    /*End Load Name*/
 
-    /*Favorite Names*/
-    public void loadFavoriteNames() {
-        NameObjectDaoDao nameObjectDaoDao = openDao();
-        List<NameObjectDao> nameObjectDaos = nameObjectDaoDao.loadAll();
-        listFavorite.clear();
-        for (NameObjectDao nameObjectDao : nameObjectDaos) {
-            listFavorite.add(new NameObject(nameObjectDao.getName(), nameObjectDao.getSex()));
-        }
-        Collections.sort(listFavorite, new Comparator<NameObject>() {
-            @Override
-            public int compare(NameObject o1, NameObject o2) {
-                return o1.getName().compareTo(o2.getName());
+    public String showListData(List<String> strings, boolean item) {
+        String res = "";
+        for (int i = 0; i < strings.size(); i++) {
+            String s = strings.get(i);
+            s = s.replaceFirst(s.substring(0, 1), s.substring(0, 1).toUpperCase());
+            if (item) {
+                res += " • ";
             }
-        });
-        if (onGetFavoriteNamesListener != null) {
-            onGetFavoriteNamesListener.onGetFavoriteNames(true);
+            res += s;
+            if (i != strings.size() - 1) {
+                res += ",";
+                if (item) {
+                    res += "\n";
+                } else {
+                    res += " ";
+                }
+            } else {
+                res += ".";
+            }
         }
+        return res;
     }
 
-    public List<NameObject> getListFavoriteNames() {
-        return this.listFavorite;
-    }
-
-    public void setOnGetFavoriteNamesListener(OnGetFavoriteNamesListener onGetFavoriteNamesListener) {
-        this.onGetFavoriteNamesListener = onGetFavoriteNamesListener;
-    }
-
-    public interface OnGetFavoriteNamesListener {
-        void onGetFavoriteNames(boolean isSuccess);
-    }
-    /*End Favorite Names*/
+    /*End Load Name*/
 
 }

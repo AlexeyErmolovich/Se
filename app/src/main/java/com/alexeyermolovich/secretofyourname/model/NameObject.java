@@ -1,34 +1,48 @@
 package com.alexeyermolovich.secretofyourname.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by ermolovich on 24.9.16.
  */
 
-public class NameObject extends NameObjectDao implements Serializable {
-
+public class NameObject implements Serializable {
     public static final String UNKNOWN = "Unknown";
     public static final String MALE = "М";//0
     public static final String FEMALE = "Ж";//1
 
+    @SerializedName("name")
+    private String name;
+    @SerializedName("sex")
+    private String sex;
+    @SerializedName("available_name")
+    private List<String> available_name;
+
     public NameObject(String name, Byte sex) {
-        super(name, sex);
+        this(name, sex == null ? null : sex == 0 ? MALE : FEMALE);
     }
 
     public NameObject(String name, String sex) {
-        super(name, sex.equals(MALE) ? Byte.valueOf("0") : sex.equals(FEMALE) ? Byte.valueOf("1") : null);
+        this.name = name;
+        this.sex = sex;
     }
 
-    public String getSexName() {
-        if (getSex() == null) {
-            return null;
-        } else if (getSex() == 0) {
-            return MALE;
-        } else if (getSex() == 1) {
-            return FEMALE;
-        } else {
-            return null;
-        }
+    public String getName() {
+        return name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public Byte getSexByte() {
+        return sex == null ? null : sex.equals(MALE) ? Byte.valueOf("0") : Byte.valueOf("1");
+    }
+
+    public List<String> getAvailable_name() {
+        return available_name;
     }
 }

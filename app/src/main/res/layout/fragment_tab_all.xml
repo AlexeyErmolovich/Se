@@ -23,6 +23,7 @@
             android:layout_centerVertical="true"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/text_count"
             android:textColor="@color/colorText" />
 
@@ -36,6 +37,7 @@
             android:layout_centerVertical="true"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
             android:textColor="@color/colorText" />
 

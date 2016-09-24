@@ -8,4 +8,26 @@
     <string name="action_title_add_favorite">Добавить в избранное</string>
     <string name="action_title_delete_favorite">Удалить из избранных</string>
 
+    <string name="text_title_available_name">Производные имена</string>
+    <string name="text_title_history">История</string>
+    <string name="text_title_character">Характер</string>
+    <string name="text_title_character_traits">Черты характера</string>
+    <string name="text_title_health">Здоровье</string>
+    <string name="text_title_sexuality">Сексуальность</string>
+    <string name="text_title_compatibility_name">Совместимость с именем второй половинки</string>
+    <string name="text_title_not_compatibility_name">Несовместимость с именем второй половинки</string>
+    <string name="text_title_middle_name_is_combined">С каким отчеством сочетается</string>
+    <string name="text_title_professions">Подходящие профессии</string>
+    <string name="text_title_catholic_birthday">Католические именины</string>
+    <string name="text_title_orthodox_birthday">Православные именины</string>
+    <string name="text_title_hobbies">Увлечения и хобби</string>
+    <string name="text_title_badges">Соответствующий имени знак</string>
+    <string name="text_title_colors">Талисман-цвет</string>
+    <string name="text_title_plant">Тотемное растение</string>
+    <string name="text_title_animals">Тотемное животное</string>
+    <string name="text_title_mineral">Талисман-камень, минерал, метал</string>
+    <string name="text_title_planet">Покровительствующая планета</string>
+    <string name="text_title_successful_day">Наиболее удачный день</string>
+    <string name="text_title_celebrities">Знаменитости носившее это имя</string>
+
 </resources>

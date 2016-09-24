@@ -99,9 +99,9 @@ public class ListAllExpandableAdapter extends BaseExpandableListAdapter {
 
         if (child != null) {
             textName.setText(child.getName());
-            if (child.getSexName().equals(NameObject.MALE)) {
+            if (child.getSex().equals(NameObject.MALE)) {
                 imageView.setBackgroundResource(R.mipmap.ic_male);
-            } else if (child.getSexName().equals(NameObject.FEMALE)) {
+            } else if (child.getSex().equals(NameObject.FEMALE)) {
                 imageView.setBackgroundResource(R.mipmap.ic_female);
             } else {
                 imageView.setBackgroundResource(0);

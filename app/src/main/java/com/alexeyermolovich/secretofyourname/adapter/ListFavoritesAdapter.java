@@ -47,9 +47,9 @@ public class ListFavoritesAdapter extends ArrayAdapter<NameObject> {
         NameObject item = getItem(position);
         if (item != null) {
             viewHolder.textName.setText(item.getName());
-            if (item.getSexName().equals(NameObject.MALE)) {
+            if (item.getSex().equals(NameObject.MALE)) {
                 viewHolder.imageView.setBackgroundResource(R.mipmap.ic_male);
-            } else if (item.getSexName().equals(NameObject.FEMALE)) {
+            } else if (item.getSex().equals(NameObject.FEMALE)) {
                 viewHolder.imageView.setBackgroundResource(R.mipmap.ic_female);
             } else {
                 viewHolder.imageView.setBackgroundResource(0);

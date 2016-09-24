@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containerDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGrey"
@@ -14,5 +15,125 @@
         android:text="@string/data_not_available"
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionAvailableName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionCharacter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionCharacterTraits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionHealth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionSexuality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionCompatibilityName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionNotCompatibilityName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionMiddleNameIsCombined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionProfessions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionCatholicBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionOrthodoxBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionHobbies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionBadges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionPlant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionAnimals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionMineral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionPlanet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionSuccessfulDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.alexeyermolovich.secretofyourname.view.SectionView
+                android:id="@+id/sectionCelebrities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
