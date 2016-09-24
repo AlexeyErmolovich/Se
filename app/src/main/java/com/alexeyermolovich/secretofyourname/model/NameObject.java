@@ -3,40 +3,27 @@ package com.alexeyermolovich.secretofyourname.model;
 import java.io.Serializable;
 
 /**
- * Created by ermolovich on 23.9.16.
+ * Created by ermolovich on 24.9.16.
  */
 
-public class NameObject implements Serializable {
+public class NameObject extends NameObjectDao implements Serializable {
 
-    public static final String UNKNOWN = "Unknown";
-    public static final String MALE = "M";
-    public static final String FEMALE = "F";
-
-    private String name;
-    private String sex;
-
-    public NameObject() {
-
-    }
+    public static final String MALE = "М";//0
+    public static final String FEMALE = "Ж";//1
 
     public NameObject(String name, String sex) {
-        if (name != null) {
-            this.name = name;
-        } else {
-            this.name = UNKNOWN;
-        }
-        if (sex != null && (sex.equals(MALE) || sex.equals(FEMALE))) {
-            this.sex = sex;
-        } else {
-            this.name = UNKNOWN;
-        }
+        super(name, sex.equals(MALE) ? Byte.valueOf("0") : sex.equals(FEMALE) ? Byte.valueOf("1") : null);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSex() {
-        return sex;
+    public String getSexName() {
+        if (getSex() == null) {
+            return null;
+        } else if (getSex() == 0) {
+            return MALE;
+        } else if (getSex() == 1) {
+            return FEMALE;
+        } else {
+            return null;
+        }
     }
 }

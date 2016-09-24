@@ -1,7 +1,6 @@
 package com.alexeyermolovich.secretofyourname.factory;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.alexeyermolovich.secretofyourname.model.NameObject;
 
@@ -27,6 +26,7 @@ import rx.Subscriber;
 public class FactoryNames {
 
     private final String TAG = this.getClass().getName();
+    public final static String ARG_OBJECT = "arg_names";
 
     private JSONObject jsonNames;
 
@@ -92,7 +92,7 @@ public class FactoryNames {
                 Collections.sort(listNames, new Comparator<NameObject>() {
                     @Override
                     public int compare(NameObject o1, NameObject o2) {
-                        return o1.getName().compareTo(o2.getName());
+                        return   o1.getName().compareTo(o2.getName());
                     }
                 });
                 if (onGetNamesListener != null)
@@ -108,7 +108,6 @@ public class FactoryNames {
 
             @Override
             public void onNext(NameObject nameObject) {
-                Log.d(TAG, "name: " + nameObject.getName() + " sex: " + nameObject.getSex());
                 listNames.add(nameObject);
                 if (onGetNamesListener != null)
                     onGetNamesListener.onGetCountNames(listNames.size());

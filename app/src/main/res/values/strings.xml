@@ -5,5 +5,7 @@
     <string name="tab_all">Все</string>
     <string name="text_count">Количество</string>
     <string name="data_not_available">Данные отсутствуют!</string>
+    <string name="action_title_add_favorite">Добавить в избранное</string>
+    <string name="action_title_delete_favorite">Удалить из избранных</string>
 
 </resources>

@@ -2,7 +2,7 @@
   "names": [
     {
       "name": "Алексей",
-      "sex": "M",
+      "sex": "М",
       "available_name": [
         "Алексей",
         "Леша",
@@ -11,7 +11,7 @@
     },
     {
       "name": "Анна",
-      "sex": "F",
+      "sex": "Ж",
       "available_name": [
         "Анна",
         "Аня"
@@ -19,14 +19,14 @@
     },
     {
       "name": "Маргарита",
-      "sex": "F",
+      "sex": "Ж",
       "available_name": [
         "Рита"
       ]
     },
     {
       "name": "Геннадий",
-      "sex": "M",
+      "sex": "М",
       "available_name": [
         "Гена"
       ]

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.alexeyermolovich.secretofyourname.adapter.PageTabAdapter;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabAll;
+import com.alexeyermolovich.secretofyourname.fragment.FragmentTabFavorites;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         pageTabAdapter = new PageTabAdapter(getSupportFragmentManager(), viewPager);
 
         FragmentTabAll fragmentTabAll = new FragmentTabAll();
+        FragmentTabFavorites fragmentTabFavorites = new FragmentTabFavorites();
 
         pageTabAdapter.addFrag(fragmentTabAll, getString(R.string.tab_all));
+        pageTabAdapter.addFrag(fragmentTabFavorites, getString(R.string.tab_favorite));
 
         viewPager.setAdapter(pageTabAdapter);
 

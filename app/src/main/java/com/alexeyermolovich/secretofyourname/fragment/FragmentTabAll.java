@@ -2,6 +2,7 @@ package com.alexeyermolovich.secretofyourname.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,8 @@ import java.util.Map;
  */
 
 public class FragmentTabAll extends FragmentTabAbstract
-        implements FactoryNames.OnGetNamesListener {
-
-    private View view;
+        implements FactoryNames.OnGetNamesListener,
+        ExpandableListView.OnChildClickListener {
 
     private ExpandableListView listView;
     private ListAllExpandableAdapter allExpandableAdapter;
@@ -44,10 +44,11 @@ public class FragmentTabAll extends FragmentTabAbstract
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        this.view = inflater.inflate(R.layout.fragment_tab_all, container, false);
+        View view = inflater.inflate(R.layout.fragment_tab_all, container, false);
 
         this.listView = (ExpandableListView) view.findViewById(R.id.listViewAll);
         listView.setAdapter(allExpandableAdapter);
+        listView.setOnChildClickListener(this);
 
         this.containerCount = (RelativeLayout) view.findViewById(R.id.containerCount);
         this.textViewCount = (TextView) view.findViewById(R.id.textViewCount);
@@ -62,12 +63,14 @@ public class FragmentTabAll extends FragmentTabAbstract
 
     private void updateUI() {
         List<NameObject> listNames = getCore().getFactoryNames().getListNames();
-        if (listNames != null) {
+        if (listNames != null && listNames.size() != allExpandableAdapter.getAllCount()) {
             containerCount.setVisibility(View.VISIBLE);
             textViewCount.setText(String.valueOf(listNames.size()));
             textWarning.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundMain);
 
+            allExpandableAdapter.getListGroup().clear();
+            allExpandableAdapter.getListChild().clear();
             for (NameObject nameObject : listNames) {
                 List<String> listGroup = allExpandableAdapter.getListGroup();
                 String groupName = nameObject.getName().substring(0, 1).toUpperCase();
@@ -82,7 +85,7 @@ public class FragmentTabAll extends FragmentTabAbstract
                 nameObjects.add(nameObject);
             }
             allExpandableAdapter.notifyDataSetChanged();
-        } else {
+        } else if (listNames == null) {
             textWarning.setVisibility(View.VISIBLE);
             containerCount.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundGrey);
@@ -106,5 +109,14 @@ public class FragmentTabAll extends FragmentTabAbstract
             containerCount.setVisibility(View.VISIBLE);
             textViewCount.setText(String.valueOf(count));
         }
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        FragmentNamesDetails fragmentNamesDetails = new FragmentNamesDetails();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FactoryNames.ARG_OBJECT, (NameObject) allExpandableAdapter.getChild(groupPosition, childPosition));
+        changeFragment(fragmentNamesDetails, bundle, true, FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        return true;
     }
 }

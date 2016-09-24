@@ -99,9 +99,9 @@ public class ListAllExpandableAdapter extends BaseExpandableListAdapter {
 
         if (child != null) {
             textName.setText(child.getName());
-            if (child.getSex().equals(NameObject.MALE)) {
+            if (child.getSexName().equals(NameObject.MALE)) {
                 imageView.setBackgroundResource(R.mipmap.ic_male);
-            } else if (child.getSex().equals(NameObject.FEMALE)) {
+            } else if (child.getSexName().equals(NameObject.FEMALE)) {
                 imageView.setBackgroundResource(R.mipmap.ic_female);
             } else {
                 imageView.setBackgroundResource(0);
@@ -129,5 +129,18 @@ public class ListAllExpandableAdapter extends BaseExpandableListAdapter {
 
     public Map<String, List<NameObject>> getListChild() {
         return listChild;
+    }
+
+    public int getAllCount() {
+        int res = 0;
+
+        for (String name : this.listGroup) {
+            List<NameObject> nameObjects = listChild.get(name);
+            if (nameObjects != null) {
+                res += nameObjects.size();
+            }
+        }
+
+        return res;
     }
 }
