@@ -8,8 +8,13 @@ import java.io.Serializable;
 
 public class NameObject extends NameObjectDao implements Serializable {
 
+    public static final String UNKNOWN = "Unknown";
     public static final String MALE = "М";//0
     public static final String FEMALE = "Ж";//1
+
+    public NameObject(String name, Byte sex) {
+        super(name, sex);
+    }
 
     public NameObject(String name, String sex) {
         super(name, sex.equals(MALE) ? Byte.valueOf("0") : sex.equals(FEMALE) ? Byte.valueOf("1") : null);

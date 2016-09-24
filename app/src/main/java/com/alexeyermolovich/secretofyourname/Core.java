@@ -26,6 +26,7 @@ public class Core extends Application {
 
         factoryNames = new FactoryNames(getApplicationContext());
         factoryNames.loadListNames();
+        factoryNames.loadFavoriteNames();
     }
 
     public static Core getInstance() {

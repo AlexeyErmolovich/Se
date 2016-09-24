@@ -25,7 +25,7 @@ import java.util.Map;
  */
 
 public class FragmentTabAll extends FragmentTabAbstract
-        implements FactoryNames.OnGetNamesListener,
+        implements FactoryNames.OnGetNameListListener,
         ExpandableListView.OnChildClickListener {
 
     private ExpandableListView listView;
@@ -54,7 +54,7 @@ public class FragmentTabAll extends FragmentTabAbstract
         this.textViewCount = (TextView) view.findViewById(R.id.textViewCount);
         this.textWarning = (TextView) view.findViewById(R.id.textWarning);
 
-        getCore().getFactoryNames().setOnGetNamesListener(this);
+        getCore().getFactoryNames().setOnGetNameListListener(this);
 
         updateUI();
 
@@ -62,6 +62,8 @@ public class FragmentTabAll extends FragmentTabAbstract
     }
 
     private void updateUI() {
+        allExpandableAdapter.getListGroup().clear();
+        allExpandableAdapter.getListChild().clear();
         List<NameObject> listNames = getCore().getFactoryNames().getListNames();
         if (listNames != null && listNames.size() != allExpandableAdapter.getAllCount()) {
             containerCount.setVisibility(View.VISIBLE);
@@ -69,8 +71,6 @@ public class FragmentTabAll extends FragmentTabAbstract
             textWarning.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundMain);
 
-            allExpandableAdapter.getListGroup().clear();
-            allExpandableAdapter.getListChild().clear();
             for (NameObject nameObject : listNames) {
                 List<String> listGroup = allExpandableAdapter.getListGroup();
                 String groupName = nameObject.getName().substring(0, 1).toUpperCase();
@@ -89,6 +89,9 @@ public class FragmentTabAll extends FragmentTabAbstract
             textWarning.setVisibility(View.VISIBLE);
             containerCount.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundGrey);
+        }
+        if (listNames != null) {
+            textViewCount.setText(String.valueOf(listNames.size()));
         }
     }
 

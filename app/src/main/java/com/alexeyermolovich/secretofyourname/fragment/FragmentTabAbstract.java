@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.alexeyermolovich.secretofyourname.Core;
 import com.alexeyermolovich.secretofyourname.MainActivity;
@@ -15,6 +16,8 @@ import com.alexeyermolovich.secretofyourname.R;
 
 public abstract class FragmentTabAbstract extends Fragment {
 
+    private final String TAG = this.getClass().getName();
+
     public MainActivity getMainActivity() {
         return mainActivity;
     }
@@ -25,6 +28,7 @@ public abstract class FragmentTabAbstract extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
 
         this.mainActivity = (MainActivity) getActivity();
         this.core = Core.getInstance();
@@ -33,6 +37,7 @@ public abstract class FragmentTabAbstract extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "OnStart");
 
         mainActivity.getSupportActionBar().setTitle(R.string.app_name);
 

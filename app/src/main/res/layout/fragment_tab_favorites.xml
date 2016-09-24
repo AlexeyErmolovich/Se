@@ -7,7 +7,7 @@
         android:id="@+id/listViewFavorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackgroundGrey"
+        android:background="@color/colorBackgroundMain"
         android:divider="@null" />
 
     <TextView
@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:text="@string/data_not_available"
         android:textColor="@color/colorSecondaryText" />
