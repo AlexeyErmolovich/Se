@@ -2,7 +2,6 @@ package com.alexeyermolovich.secretofyourname.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +87,7 @@ public class FragmentTabAll extends FragmentTabAbstract
         } else if (listNames == null) {
             textWarning.setVisibility(View.VISIBLE);
             containerCount.setVisibility(View.GONE);
-            listView.setBackgroundResource(R.color.colorBackgroundGrey);
+            listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         }
         if (listNames != null) {
             textViewCount.setText(String.valueOf(listNames.size()));
@@ -100,9 +99,11 @@ public class FragmentTabAll extends FragmentTabAbstract
         if (isSuccess) {
             updateUI();
         } else {
+            allExpandableAdapter.getListGroup().clear();
+            allExpandableAdapter.getListChild().clear();
             textWarning.setVisibility(View.VISIBLE);
             containerCount.setVisibility(View.GONE);
-            listView.setBackgroundResource(R.color.colorBackgroundGrey);
+            listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         }
     }
 
@@ -116,10 +117,7 @@ public class FragmentTabAll extends FragmentTabAbstract
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-        FragmentNamesDetails fragmentNamesDetails = new FragmentNamesDetails();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(FactoryNames.ARG_OBJECT, (NameObject) allExpandableAdapter.getChild(groupPosition, childPosition));
-        changeFragment(fragmentNamesDetails, bundle, true, FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        openFragmentDetails((NameObject) allExpandableAdapter.getChild(groupPosition, childPosition));
         return true;
     }
 }

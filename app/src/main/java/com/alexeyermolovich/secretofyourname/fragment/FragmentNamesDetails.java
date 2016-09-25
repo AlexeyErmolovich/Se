@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexeyermolovich.secretofyourname.Core;
 import com.alexeyermolovich.secretofyourname.MainActivity;
@@ -114,6 +115,7 @@ public class FragmentNamesDetails extends Fragment
         mainActivity.getSupportActionBar().setTitle(nameObject.getName());
         mainActivity.getSupportActionBar().setHomeButtonEnabled(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.hideKeyboard();
         setHasOptionsMenu(true);
     }
 
@@ -151,14 +153,21 @@ public class FragmentNamesDetails extends Fragment
     public void onGetFavorite(boolean favorite) {
         menuAddFavorite.setVisible(!favorite);
         menuDeleteFavorite.setVisible(favorite);
+        if (favorite) {
+            Toast.makeText(core.getApplicationContext(), R.string.message_add_favorite, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(core.getApplicationContext(), R.string.message_delete_favorite, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
-    public void onGetName(FullNameObject nameObject) {
+    public void onGetName(FullNameObject nameObject, boolean isFavorite) {
         if (nameObject != null) {
             containerMain.setBackgroundResource(R.color.colorBackgroundMain);
+            menuAddFavorite.setVisible(!isFavorite);
+            menuDeleteFavorite.setVisible(isFavorite);
             sectionAvailableName.setTextAndData(getString(R.string.text_title_available_name),
-                    core.getFactoryNames().showListData(nameObject.getAvailable_name(), false));
+                    core.getFactoryNames().showListData(nameObject.getAvailableName(), false));
             sectionHistory.setTextAndData(getString(R.string.text_title_history), nameObject.getHistory());
             sectionCharacter.setTextAndData(getString(R.string.text_title_character), nameObject.getCharacter());
             sectionCharacterTraits.setTextAndData(getString(R.string.text_title_character_traits),
@@ -193,7 +202,7 @@ public class FragmentNamesDetails extends Fragment
                     core.getFactoryNames().showListData(nameObject.getCelebrities(), true));
         } else {
             scrollView.setVisibility(View.GONE);
-            containerMain.setBackgroundResource(R.color.colorBackgroundGrey);
+            containerMain.setBackgroundResource(R.color.colorBackgroundEmpty);
             textWarning.setVisibility(View.VISIBLE);
         }
     }

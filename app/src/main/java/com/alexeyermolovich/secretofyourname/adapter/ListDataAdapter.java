@@ -18,9 +18,9 @@ import java.util.List;
  * Created by ermolovich on 24.9.16.
  */
 
-public class ListFavoritesAdapter extends ArrayAdapter<NameObject> {
+public class ListDataAdapter extends ArrayAdapter<NameObject> {
 
-    public ListFavoritesAdapter(Context context, List<NameObject> objects) {
+    public ListDataAdapter(Context context, List<NameObject> objects) {
         super(context, R.layout.fragment_names_item, objects);
     }
 

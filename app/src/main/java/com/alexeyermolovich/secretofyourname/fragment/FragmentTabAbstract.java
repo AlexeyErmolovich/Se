@@ -9,6 +9,8 @@ import android.util.Log;
 import com.alexeyermolovich.secretofyourname.Core;
 import com.alexeyermolovich.secretofyourname.MainActivity;
 import com.alexeyermolovich.secretofyourname.R;
+import com.alexeyermolovich.secretofyourname.factory.FactoryNames;
+import com.alexeyermolovich.secretofyourname.model.NameObject;
 
 /**
  * Created by ermolovich on 23.9.16.
@@ -43,6 +45,7 @@ public abstract class FragmentTabAbstract extends Fragment {
 
         mainActivity.getSupportActionBar().setHomeButtonEnabled(false);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.hideKeyboard();
     }
 
     public Core getCore() {
@@ -73,4 +76,10 @@ public abstract class FragmentTabAbstract extends Fragment {
         }
     }
 
+    protected void openFragmentDetails(NameObject item) {
+        FragmentNamesDetails fragmentNamesDetails = new FragmentNamesDetails();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FactoryNames.ARG_OBJECT, item);
+        changeFragment(fragmentNamesDetails, bundle, true, FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+    }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 
 public class FullNameObject extends NameObject {
 
+    @SerializedName("available_name")
+    private List<String> availableName;
     @SerializedName("orthodox_birthday")
     private String orthodoxBirthday;
     @SerializedName("catholic_birthday")
@@ -137,5 +139,9 @@ public class FullNameObject extends NameObject {
 
     public String getCatholicBirthday() {
         return catholicBirthday;
+    }
+
+    public List<String> getAvailableName() {
+        return availableName;
     }
 }

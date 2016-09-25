@@ -2,7 +2,6 @@ package com.alexeyermolovich.secretofyourname.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.ListViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.alexeyermolovich.secretofyourname.Core;
 import com.alexeyermolovich.secretofyourname.R;
-import com.alexeyermolovich.secretofyourname.adapter.ListFavoritesAdapter;
+import com.alexeyermolovich.secretofyourname.adapter.ListDataAdapter;
 import com.alexeyermolovich.secretofyourname.factory.FactoryNames;
 import com.alexeyermolovich.secretofyourname.model.NameObject;
 
@@ -27,14 +26,14 @@ public class FragmentTabFavorites extends FragmentTabAbstract
         implements FactoryNames.OnGetFavoriteNamesListener,
         ListViewCompat.OnItemClickListener {
 
-    private ListFavoritesAdapter listFavoritesAdapter;
+    private ListDataAdapter listFavoritesAdapter;
     private ListViewCompat listView;
     private TextView textWarning;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listFavoritesAdapter = new ListFavoritesAdapter(Core.getInstance().getApplicationContext(), new ArrayList<NameObject>());
+        listFavoritesAdapter = new ListDataAdapter(Core.getInstance().getApplicationContext(), new ArrayList<NameObject>());
     }
 
     @Nullable
@@ -61,17 +60,16 @@ public class FragmentTabFavorites extends FragmentTabAbstract
         if (isSuccess) {
             updateUI();
         } else {
+            listFavoritesAdapter.clear();
             textWarning.setVisibility(View.VISIBLE);
-            listView.setBackgroundResource(R.color.colorBackgroundGrey);
+            listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FragmentNamesDetails fragmentNamesDetails = new FragmentNamesDetails();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(FactoryNames.ARG_OBJECT, listFavoritesAdapter.getItem(position));
-        changeFragment(fragmentNamesDetails, bundle, true, FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (id >= 0 && id < listFavoritesAdapter.getCount())
+            openFragmentDetails(listFavoritesAdapter.getItem((int) id));
     }
 
     private void updateUI() {
@@ -80,17 +78,15 @@ public class FragmentTabFavorites extends FragmentTabAbstract
         if (listNames != null && listNames.size() != listFavoritesAdapter.getCount() && listNames.size() != 0) {
             textWarning.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundMain);
-
             listFavoritesAdapter.addAll(listNames);
             listFavoritesAdapter.notifyDataSetChanged();
             return;
         } else if (listNames != null && listNames.size() == 0) {
-
             textWarning.setVisibility(View.VISIBLE);
-            listView.setBackgroundResource(R.color.colorBackgroundGrey);
+            listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         } else if (listNames == null) {
             textWarning.setVisibility(View.VISIBLE);
-            listView.setBackgroundResource(R.color.colorBackgroundGrey);
+            listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         }
     }
 }

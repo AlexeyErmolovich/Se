@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Секрет Твоего Имени</string>
+    <string name="app_name">Значение Имени</string>
     <string name="tab_name_search">Поиск</string>
     <string name="tab_favorite">Избранное</string>
     <string name="tab_all">Все</string>
@@ -7,6 +7,8 @@
     <string name="data_not_available">Данные отсутствуют!</string>
     <string name="action_title_add_favorite">Добавить в избранное</string>
     <string name="action_title_delete_favorite">Удалить из избранных</string>
+    <string name="message_add_favorite">Запись добавлена в избранное!</string>
+    <string name="message_delete_favorite">Запись удалена из избранное!</string>
 
     <string name="text_title_available_name">Производные имена</string>
     <string name="text_title_history">История</string>
@@ -29,5 +31,11 @@
     <string name="text_title_planet">Покровительствующая планета</string>
     <string name="text_title_successful_day">Наиболее удачный день</string>
     <string name="text_title_celebrities">Знаменитости носившее это имя</string>
+
+    <string name="text_search">Найти</string>
+
+    <string-array name="search">
+        <item>По Имени</item>
+    </string-array>
 
 </resources>

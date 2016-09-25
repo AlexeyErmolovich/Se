@@ -3,7 +3,6 @@ package com.alexeyermolovich.secretofyourname.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by ermolovich on 24.9.16.
@@ -18,8 +17,6 @@ public class NameObject implements Serializable {
     private String name;
     @SerializedName("sex")
     private String sex;
-    @SerializedName("available_name")
-    private List<String> available_name;
 
     public NameObject(String name, Byte sex) {
         this(name, sex == null ? null : sex == 0 ? MALE : FEMALE);
@@ -40,9 +37,5 @@ public class NameObject implements Serializable {
 
     public Byte getSexByte() {
         return sex == null ? null : sex.equals(MALE) ? Byte.valueOf("0") : Byte.valueOf("1");
-    }
-
-    public List<String> getAvailable_name() {
-        return available_name;
     }
 }

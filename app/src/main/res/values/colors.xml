@@ -10,6 +10,6 @@
     <color name="colorDivider">#BDBDBD</color>
 
     <color name="colorBackgroundMain">#ffffff</color>
-    <color name="colorBackgroundGrey">#BDBDBD</color>
+    <color name="colorBackgroundEmpty">#FFFFFF</color>
 
 </resources>

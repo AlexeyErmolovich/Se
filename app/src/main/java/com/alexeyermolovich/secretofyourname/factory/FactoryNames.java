@@ -20,9 +20,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import rx.Observable;
@@ -37,15 +37,19 @@ public class FactoryNames {
     private final String TAG = this.getClass().getName();
     public final static String ARG_OBJECT = "arg_names";
     public final static String DB_NAME = "FavoriteName";
-    public final static int DB_VERSION = 1;
 
     public final static String FIELD_NAME = "name";
-    public final static String FIELD_SEX = "sex";
+
+    private final byte SEARCH_FOR_NAME = 0;
+    private String[] searchFiels = new String[]{
+            "available_name"
+    };
 
     private JSONObject jsonNames;
 
-    private List<NameObject> listNames;
-    private List<NameObject> listFavorite;
+    private LinkedList<NameObject> listNames;
+    private LinkedList<NameObject> listFavorite;
+    private LinkedList<NameObject> listSearch;
     private FullNameObject nameObject;
 
     private SQLiteDatabase sqLiteDatabase;
@@ -54,10 +58,12 @@ public class FactoryNames {
     private OnGetNameListListener onGetNameListListener;
     private OnGetNameListener onGetNameListener;
     private OnGetFavoriteNamesListener onGetFavoriteNamesListener;
+    private OnSearchDataListener onSearchDataListener;
 
     public FactoryNames(Context context) {
-        this.listNames = new ArrayList<>();
-        this.listFavorite = new ArrayList<>();
+        this.listSearch = new LinkedList<>();
+        this.listNames = new LinkedList<>();
+        this.listFavorite = new LinkedList<>();
         this.gson = new Gson();
         this.jsonNames = readJsonFromFile(context);
     }
@@ -95,6 +101,7 @@ public class FactoryNames {
 
     /*All Names*/
     public void loadListNames() {
+        listNames.clear();
         Observable<NameObject> nameObjectObservable = Observable.create(new Observable.OnSubscribe<NameObject>() {
             @Override
             public void call(Subscriber<? super NameObject> subscriber) {
@@ -153,16 +160,6 @@ public class FactoryNames {
     public List<NameObject> getListNames() {
         return listNames;
     }
-
-    public void setOnGetNameListListener(OnGetNameListListener onGetNameListListener) {
-        this.onGetNameListListener = onGetNameListListener;
-    }
-
-    public interface OnGetNameListListener {
-        void onGetNames(boolean isSuccess);
-
-        void onGetCountNames(int count);
-    }
     /*End All Names*/
 
     /*Favorite Names*/
@@ -187,22 +184,11 @@ public class FactoryNames {
     public List<NameObject> getListFavoriteNames() {
         return this.listFavorite;
     }
-
-    public void setOnGetFavoriteNamesListener(OnGetFavoriteNamesListener onGetFavoriteNamesListener) {
-        this.onGetFavoriteNamesListener = onGetFavoriteNamesListener;
-    }
-
-    public interface OnGetFavoriteNamesListener {
-        void onGetFavoriteNames(boolean isSuccess);
-    }
     /*End Favorite Names*/
 
     /*Load Name*/
-    public void setOnGetNameListener(OnGetNameListener onGetNameListener) {
-        this.onGetNameListener = onGetNameListener;
-    }
-
     public void loadFullNameObject(final String nameObject) {
+        this.nameObject = null;
         Observable<FullNameObject> fullNameObjectObservable = Observable.create(new Observable.OnSubscribe<FullNameObject>() {
             @Override
             public void call(Subscriber<? super FullNameObject> subscriber) {
@@ -241,11 +227,9 @@ public class FactoryNames {
             public void onCompleted() {
                 Log.d(TAG, "onCompleted loadName - " + nameObject.getName());
                 if (onGetNameListener != null) {
-                    onGetNameListener.onGetName(nameObject);
-
                     NameObjectDaoDao nameObjectDaoDao = openDao();
                     NameObjectDao load = nameObjectDaoDao.load(nameObject.getName());
-                    onGetNameListener.onGetFavorite(load != null);
+                    onGetNameListener.onGetName(nameObject, load != null);
                     closeDao();
                 }
             }
@@ -256,8 +240,7 @@ public class FactoryNames {
                 e.printStackTrace();
                 nameObject = null;
                 if (onGetNameListener != null) {
-                    onGetNameListener.onGetName(null);
-                    onGetNameListener.onGetFavorite(false);
+                    onGetNameListener.onGetName(null, false);
                 }
             }
 
@@ -292,12 +275,6 @@ public class FactoryNames {
     }
 
 
-    public interface OnGetNameListener {
-        void onGetFavorite(boolean favorite);
-
-        void onGetName(FullNameObject nameObject);
-    }
-
     public String showListData(List<String> strings, boolean item) {
         String res = "";
         for (int i = 0; i < strings.size(); i++) {
@@ -320,7 +297,124 @@ public class FactoryNames {
         }
         return res;
     }
-
     /*End Load Name*/
 
+    /*Search*/
+    public List<NameObject> getListSearch() {
+        return this.listSearch;
+    }
+
+    public void loadDataSearch(String search, byte searchType) {
+        listSearch.clear();
+        if (search != null && search.length() != 0) {
+            searchData(search, searchType);
+        } else {
+            if (onSearchDataListener != null) {
+                onSearchDataListener.onSearchResult(false);
+            }
+        }
+    }
+
+    public void searchData(final String search, final byte searchType) {
+        Observable<NameObject> nameObjectObservable = Observable.create(new Observable.OnSubscribe<NameObject>() {
+            @Override
+            public void call(Subscriber<? super NameObject> subscriber) {
+                try {
+                    JSONArray jsonArray = jsonNames.getJSONArray("names");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        if (jsonObject.has(searchFiels[searchType])) {
+                            JSONArray items = jsonObject.getJSONArray(searchFiels[searchType]);
+                            for (int j = 0; j < items.length(); j++) {
+                                String s = formatString(items.getString(j).toUpperCase());
+                                if (s.contains(search.toUpperCase())) {
+                                    subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    subscriber.onCompleted();
+                } catch (Exception e) {
+                    try {
+                        subscriber.onError(e);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        });
+
+        nameObjectObservable.subscribe(initSubscriberSearch());
+    }
+
+    private String formatString(String s) {
+        String res = null;
+        res = s.replace("Ё", "Е");
+        return null;
+    }
+
+    private Subscriber<? super NameObject> initSubscriberSearch() {
+        return new Subscriber<NameObject>() {
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "onCompleted search");
+                if (onSearchDataListener != null) {
+                    onSearchDataListener.onSearchResult(true);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError search");
+                e.printStackTrace();
+                if (onSearchDataListener != null) {
+                    onSearchDataListener.onSearchResult(false);
+                }
+            }
+
+            @Override
+            public void onNext(NameObject object) {
+                Log.d("TEST", object.getName());
+                listSearch.add(object);
+            }
+        };
+    }
+    /*End Search*/
+
+
+    public void setOnSearchDataListener(OnSearchDataListener onSearchDataListener) {
+        this.onSearchDataListener = onSearchDataListener;
+    }
+
+    public void setOnGetNameListListener(OnGetNameListListener onGetNameListListener) {
+        this.onGetNameListListener = onGetNameListListener;
+    }
+
+    public void setOnGetNameListener(OnGetNameListener onGetNameListener) {
+        this.onGetNameListener = onGetNameListener;
+    }
+
+    public void setOnGetFavoriteNamesListener(OnGetFavoriteNamesListener onGetFavoriteNamesListener) {
+        this.onGetFavoriteNamesListener = onGetFavoriteNamesListener;
+    }
+
+    public interface OnGetFavoriteNamesListener {
+        void onGetFavoriteNames(boolean isSuccess);
+    }
+
+    public interface OnSearchDataListener {
+        void onSearchResult(boolean isSuccess);
+    }
+
+    public interface OnGetNameListListener {
+        void onGetNames(boolean isSuccess);
+
+        void onGetCountNames(int count);
+    }
+
+    public interface OnGetNameListener {
+        void onGetFavorite(boolean favorite);
+
+        void onGetName(FullNameObject nameObject, boolean isFavorite);
+    }
 }

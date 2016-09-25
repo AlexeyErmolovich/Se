@@ -10,10 +10,13 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = false
     }
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
+            project.ext.set("archivesBaseName", "SecretOfYourName-" + defaultConfig.versionName);
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,4 +30,5 @@ dependencies {
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'de.greenrobot:greendao-generator:2.1.0'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.android.gms:play-services-ads:9.6.0'
 }

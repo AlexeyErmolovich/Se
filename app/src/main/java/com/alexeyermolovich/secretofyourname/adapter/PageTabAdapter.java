@@ -1,9 +1,9 @@
 package com.alexeyermolovich.secretofyourname.adapter;
 
-import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -46,12 +46,12 @@ public class PageTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        //super.destroyItem(container, position, object);
+        super.destroyItem(container, position, object);
         if (position < getCount()) {
-            android.app.FragmentManager manager = ((android.app.Fragment) object).getFragmentManager();
+            FragmentManager manager = ((Fragment) object).getFragmentManager();
             if (manager != null) {
                 FragmentTransaction trans = manager.beginTransaction();
-                trans.remove((android.app.Fragment) object);
+                trans.remove((Fragment) object);
                 trans.commit();
             }
         }
