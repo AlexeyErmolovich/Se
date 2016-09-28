@@ -298,6 +298,12 @@ public class FactoryNames {
         }
         return res;
     }
+
+    public String showString(String string) {
+        if (string == null)
+            return null;
+        return string.replace(string.substring(0, 1), string.substring(0, 1).toUpperCase());
+    }
     /*End Load Name*/
 
     /*Search*/
