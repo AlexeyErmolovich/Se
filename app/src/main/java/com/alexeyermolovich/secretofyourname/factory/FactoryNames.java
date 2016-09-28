@@ -42,7 +42,8 @@ public class FactoryNames {
 
     private final byte SEARCH_FOR_NAME = 0;
     private String[] searchFiels = new String[]{
-            "available_name"
+            "available_name",
+            "middle_name_is_combined"
     };
 
     private JSONObject jsonNames;
@@ -307,7 +308,7 @@ public class FactoryNames {
     public void loadDataSearch(String search, byte searchType) {
         listSearch.clear();
         if (search != null && search.length() != 0) {
-            searchData(search, searchType);
+            searchData(formatString(search), searchType);
         } else {
             if (onSearchDataListener != null) {
                 onSearchDataListener.onSearchResult(false);
@@ -326,8 +327,8 @@ public class FactoryNames {
                         if (jsonObject.has(searchFiels[searchType])) {
                             JSONArray items = jsonObject.getJSONArray(searchFiels[searchType]);
                             for (int j = 0; j < items.length(); j++) {
-                                String s = formatString(items.getString(j).toUpperCase());
-                                if (s.contains(search.toUpperCase())) {
+                                String s = formatString(items.getString(j));
+                                if (s.contains(search)) {
                                     subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
                                     break;
                                 }
@@ -350,7 +351,8 @@ public class FactoryNames {
     private String formatString(String s) {
         String res = null;
         res = s.replace("Ё", "Е");
-        return null;
+        res = res.replace(" ", "");
+        return res.toUpperCase();
     }
 
     private Subscriber<? super NameObject> initSubscriberSearch() {

@@ -36,6 +36,7 @@
 
     <string-array name="search">
         <item>По Имени</item>
+        <item>По Отчеству</item>
     </string-array>
 
 </resources>

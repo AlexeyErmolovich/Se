@@ -166,40 +166,113 @@ public class FragmentNamesDetails extends Fragment
             containerMain.setBackgroundResource(R.color.colorBackgroundMain);
             menuAddFavorite.setVisible(!isFavorite);
             menuDeleteFavorite.setVisible(isFavorite);
-            sectionAvailableName.setTextAndData(getString(R.string.text_title_available_name),
-                    core.getFactoryNames().showListData(nameObject.getAvailableName(), false));
-            sectionHistory.setTextAndData(getString(R.string.text_title_history), nameObject.getHistory());
-            sectionCharacter.setTextAndData(getString(R.string.text_title_character), nameObject.getCharacter());
-            sectionCharacterTraits.setTextAndData(getString(R.string.text_title_character_traits),
-                    core.getFactoryNames().showListData(nameObject.getCharacterTraits(), false));
-            sectionHealth.setTextAndData(getString(R.string.text_title_health), nameObject.getHealth());
-            sectionSexuality.setTextAndData(getString(R.string.text_title_sexuality), nameObject.getSexuality());
-            sectionCompatibilityName.setTextAndData(getString(R.string.text_title_compatibility_name),
-                    core.getFactoryNames().showListData(nameObject.getCompatibilityName(), false));
-            sectionNotCompatibilityName.setTextAndData(getString(R.string.text_title_not_compatibility_name),
-                    core.getFactoryNames().showListData(nameObject.getNotCompatibilityName(), false));
-            sectionMiddleNameIsCombined.setTextAndData(getString(R.string.text_title_middle_name_is_combined),
-                    core.getFactoryNames().showListData(nameObject.getMiddleNameIsCombined(), false));
-            sectionProfessions.setTextAndData(getString(R.string.text_title_professions), nameObject.getProfessions());
-            sectionCatholicBirthday.setTextAndData(getString(R.string.text_title_catholic_birthday), nameObject.getCatholicBirthday());
-            sectionOrthodoxBirthday.setTextAndData(getString(R.string.text_title_orthodox_birthday), nameObject.getOrthodoxBirthday());
-            sectionHobbies.setTextAndData(getString(R.string.text_title_hobbies), nameObject.getHobbies());
-            sectionBadges.setTextAndData(getString(R.string.text_title_badges),
-                    core.getFactoryNames().showListData(nameObject.getBadges(), false));
-            sectionColors.setTextAndData(getString(R.string.text_title_colors),
-                    core.getFactoryNames().showListData(nameObject.getColors(), false));
-            sectionPlant.setTextAndData(getString(R.string.text_title_plant),
-                    core.getFactoryNames().showListData(nameObject.getPlant(), false));
-            sectionAnimals.setTextAndData(getString(R.string.text_title_animals),
-                    core.getFactoryNames().showListData(nameObject.getAnimals(), false));
-            sectionMineral.setTextAndData(getString(R.string.text_title_mineral),
-                    core.getFactoryNames().showListData(nameObject.getMineral(), false));
-            sectionPlanet.setTextAndData(getString(R.string.text_title_planet),
-                    core.getFactoryNames().showListData(nameObject.getPlanet(), false));
-            sectionSuccessfulDay.setTextAndData(getString(R.string.text_title_successful_day),
-                    core.getFactoryNames().showListData(nameObject.getSuccessfulDay(), false));
-            sectionCelebrities.setTextAndData(getString(R.string.text_title_celebrities),
-                    core.getFactoryNames().showListData(nameObject.getCelebrities(), true));
+
+            if (nameObject.getAvailableName() != null)
+                sectionAvailableName.setTextAndData(getString(R.string.text_title_available_name), nameObject.getAvailableName());
+            else
+                sectionAvailableName.setVisibility(View.GONE);
+
+            if (nameObject.getHistory() != null)
+                sectionHistory.setTextAndData(getString(R.string.text_title_history), nameObject.getHistory());
+            else
+                sectionHistory.setVisibility(View.GONE);
+
+            if (nameObject.getCharacter() != null)
+                sectionCharacter.setTextAndData(getString(R.string.text_title_character), nameObject.getCharacter());
+            else
+                sectionCharacter.setVisibility(View.GONE);
+
+            if (nameObject.getCharacterTraits() != null)
+                sectionCharacterTraits.setTextAndData(getString(R.string.text_title_character_traits), nameObject.getCharacterTraits());
+            else
+                sectionCharacterTraits.setVisibility(View.GONE);
+
+            if (nameObject.getHealth() != null)
+                sectionHealth.setTextAndData(getString(R.string.text_title_health), nameObject.getHealth());
+            else
+                sectionHealth.setVisibility(View.GONE);
+
+            if (nameObject.getSexuality() != null)
+                sectionSexuality.setTextAndData(getString(R.string.text_title_sexuality), nameObject.getSexuality());
+            else
+                sectionSexuality.setVisibility(View.GONE);
+
+            if (nameObject.getCompatibilityName() != null)
+                sectionCompatibilityName.setTextAndData(getString(R.string.text_title_compatibility_name), nameObject.getCompatibilityName());
+            else
+                sectionCompatibilityName.setVisibility(View.GONE);
+
+            if (nameObject.getNotCompatibilityName() != null)
+                sectionNotCompatibilityName.setTextAndData(getString(R.string.text_title_not_compatibility_name), nameObject.getNotCompatibilityName());
+            else
+                sectionNotCompatibilityName.setVisibility(View.GONE);
+
+            if (nameObject.getMiddleNameIsCombined() != null)
+                sectionMiddleNameIsCombined.setTextAndData(getString(R.string.text_title_middle_name_is_combined), nameObject.getMiddleNameIsCombined());
+            else
+                sectionMiddleNameIsCombined.setVisibility(View.GONE);
+
+            if (nameObject.getProfessions() != null)
+                sectionProfessions.setTextAndData(getString(R.string.text_title_professions), nameObject.getProfessions());
+            else
+                sectionProfessions.setVisibility(View.GONE);
+
+            if (nameObject.getCatholicBirthday() != null)
+                sectionCatholicBirthday.setTextAndData(getString(R.string.text_title_catholic_birthday), nameObject.getCatholicBirthday());
+            else
+                sectionCatholicBirthday.setVisibility(View.GONE);
+
+            if (nameObject.getOrthodoxBirthday() != null)
+                sectionOrthodoxBirthday.setTextAndData(getString(R.string.text_title_orthodox_birthday), nameObject.getOrthodoxBirthday());
+            else
+                sectionOrthodoxBirthday.setVisibility(View.GONE);
+
+            if (nameObject.getHobbies() != null)
+                sectionHobbies.setTextAndData(getString(R.string.text_title_hobbies), nameObject.getHobbies());
+            else
+                sectionHobbies.setVisibility(View.GONE);
+
+            if (nameObject.getBadges() != null)
+                sectionBadges.setTextAndData(getString(R.string.text_title_badges), nameObject.getBadges());
+            else
+                sectionBadges.setVisibility(View.GONE);
+
+            if (nameObject.getColors() != null)
+                sectionColors.setTextAndData(getString(R.string.text_title_colors), nameObject.getColors());
+            else
+                sectionColors.setVisibility(View.GONE);
+
+            if (nameObject.getPlant() != null)
+                sectionPlant.setTextAndData(getString(R.string.text_title_plant), nameObject.getPlant());
+            else
+                sectionPlant.setVisibility(View.GONE);
+
+            if (nameObject.getAnimals() != null)
+                sectionAnimals.setTextAndData(getString(R.string.text_title_animals), nameObject.getAnimals());
+            else
+                sectionAnimals.setVisibility(View.GONE);
+
+            if (nameObject.getMineral() != null)
+                sectionMineral.setTextAndData(getString(R.string.text_title_mineral), nameObject.getMineral());
+            else
+                sectionMineral.setVisibility(View.GONE);
+
+            if (nameObject.getPlanet() != null)
+                sectionPlanet.setTextAndData(getString(R.string.text_title_planet), nameObject.getPlanet());
+            else
+                sectionPlanet.setVisibility(View.GONE);
+
+            if (nameObject.getSuccessfulDay() != null)
+                sectionSuccessfulDay.setTextAndData(getString(R.string.text_title_successful_day), nameObject.getSuccessfulDay());
+            else
+                sectionSuccessfulDay.setVisibility(View.GONE);
+
+            if (nameObject.getCelebrities() != null)
+                sectionCelebrities.setTextAndData(getString(R.string.text_title_celebrities),
+                        core.getFactoryNames().showListData(nameObject.getCelebrities(), true));
+            else
+                sectionCelebrities.setVisibility(View.GONE);
+
         } else {
             scrollView.setVisibility(View.GONE);
             containerMain.setBackgroundResource(R.color.colorBackgroundEmpty);

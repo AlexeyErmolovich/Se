@@ -11,7 +11,7 @@ import java.util.List;
 public class FullNameObject extends NameObject {
 
     @SerializedName("available_name")
-    private List<String> availableName;
+    private String availableName;
     @SerializedName("orthodox_birthday")
     private String orthodoxBirthday;
     @SerializedName("catholic_birthday")
@@ -23,29 +23,29 @@ public class FullNameObject extends NameObject {
     @SerializedName("sexuality")
     private String sexuality;
     @SerializedName("compatibility_name")
-    private List<String> compatibilityName;
+    private String compatibilityName;
     @SerializedName("not_compatibility_name")
-    private List<String> notCompatibilityName;
+    private String notCompatibilityName;
     @SerializedName("middle_name_is_combined")
-    private List<String> middleNameIsCombined;
+    private String middleNameIsCombined;
     @SerializedName("badges")
-    private List<String> badges;
+    private String badges;
     @SerializedName("colors")
-    private List<String> colors;
+    private String colors;
     @SerializedName("plant")
-    private List<String> plant;
+    private String plant;
     @SerializedName("animals")
-    private List<String> animals;
+    private String animals;
     @SerializedName("mineral")
-    private List<String> mineral;
+    private String mineral;
     @SerializedName("planet")
-    private List<String> planet;
+    private String planet;
     @SerializedName("successful_day")
-    private List<String> successfulDay;
+    private String successfulDay;
     @SerializedName("health")
     private String health;
     @SerializedName("character_traits")
-    private List<String> characterTraits;
+    private String characterTraits;
     @SerializedName("celebrities")
     private List<String> celebrities;
     @SerializedName("professions")
@@ -77,43 +77,43 @@ public class FullNameObject extends NameObject {
         return sexuality;
     }
 
-    public List<String> getNotCompatibilityName() {
+    public String getNotCompatibilityName() {
         return notCompatibilityName;
     }
 
-    public List<String> getCompatibilityName() {
+    public String getCompatibilityName() {
         return compatibilityName;
     }
 
-    public List<String> getMiddleNameIsCombined() {
+    public String getMiddleNameIsCombined() {
         return middleNameIsCombined;
     }
 
-    public List<String> getBadges() {
+    public String getBadges() {
         return badges;
     }
 
-    public List<String> getColors() {
+    public String getColors() {
         return colors;
     }
 
-    public List<String> getPlant() {
+    public String getPlant() {
         return plant;
     }
 
-    public List<String> getAnimals() {
+    public String getAnimals() {
         return animals;
     }
 
-    public List<String> getMineral() {
+    public String getMineral() {
         return mineral;
     }
 
-    public List<String> getPlanet() {
+    public String getPlanet() {
         return planet;
     }
 
-    public List<String> getSuccessfulDay() {
+    public String getSuccessfulDay() {
         return successfulDay;
     }
 
@@ -121,7 +121,7 @@ public class FullNameObject extends NameObject {
         return health;
     }
 
-    public List<String> getCharacterTraits() {
+    public String getCharacterTraits() {
         return characterTraits;
     }
 
@@ -141,7 +141,7 @@ public class FullNameObject extends NameObject {
         return catholicBirthday;
     }
 
-    public List<String> getAvailableName() {
+    public String getAvailableName() {
         return availableName;
     }
 }
