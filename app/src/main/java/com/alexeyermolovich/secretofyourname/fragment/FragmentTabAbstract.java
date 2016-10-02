@@ -40,12 +40,6 @@ public abstract class FragmentTabAbstract extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "OnStart");
-
-        mainActivity.getSupportActionBar().setTitle(R.string.app_name);
-
-        mainActivity.getSupportActionBar().setHomeButtonEnabled(false);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mainActivity.hideKeyboard();
     }
 
     public Core getCore() {

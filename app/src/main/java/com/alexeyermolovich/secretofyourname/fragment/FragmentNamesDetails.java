@@ -3,6 +3,7 @@ package com.alexeyermolovich.secretofyourname.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,8 @@ import com.alexeyermolovich.secretofyourname.view.SectionView;
 
 public class FragmentNamesDetails extends Fragment
         implements FactoryNames.OnGetNameListener {
+
+    private final String TAG = this.getClass().getName();
 
     private Core core;
     private MainActivity mainActivity;
@@ -105,18 +108,33 @@ public class FragmentNamesDetails extends Fragment
 
         core.getFactoryNames().setOnGetNameListener(this);
 
+        mainActivity.getSupportActionBar().setTitle(nameObject.getName());
+        mainActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.hideKeyboard();
+        setHasOptionsMenu(true);
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "OnStart");
+    }
 
-        mainActivity.getSupportActionBar().setTitle(nameObject.getName());
-        mainActivity.getSupportActionBar().setHomeButtonEnabled(true);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mainActivity.getSupportActionBar().setTitle(R.string.app_name);
+        mainActivity.getSupportActionBar().setHomeButtonEnabled(false);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.hideKeyboard();
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -163,6 +181,7 @@ public class FragmentNamesDetails extends Fragment
     @Override
     public void onGetName(FullNameObject nameObject, boolean isFavorite) {
         if (nameObject != null) {
+            mainActivity.getSupportActionBar().setTitle(nameObject.getName());
             containerMain.setBackgroundResource(R.color.colorBackgroundMain);
             menuAddFavorite.setVisible(!isFavorite);
             menuDeleteFavorite.setVisible(isFavorite);

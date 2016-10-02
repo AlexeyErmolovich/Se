@@ -1,6 +1,7 @@
 package com.alexeyermolovich.secretofyourname;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +13,32 @@ import com.alexeyermolovich.secretofyourname.adapter.PageTabAdapter;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabAll;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabFavorites;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabSearch;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
 
     private Core core;
 
+    private AppBarLayout appBarLayout;
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
     private PageTabAdapter pageTabAdapter;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2813036344877124~6081600895");
+
+        adView = (AdView)this.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder() .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adView.loadAd(adRequest);
 
         initUi();
     }
@@ -34,10 +46,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         pageTabAdapter.clearPager();
+        adView.destroy();
         super.onDestroy();
     }
 
     private void initUi() {
+        this.appBarLayout = (AppBarLayout) findViewById(R.id.appBarMain);
         this.toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         this.viewPager = (ViewPager) findViewById(R.id.viewPager);
         setupViewPager();
@@ -70,5 +84,9 @@ public class MainActivity extends AppCompatActivity {
             view = new View(this);
         }
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public AppBarLayout getAppBarLayout() {
+        return appBarLayout;
     }
 }

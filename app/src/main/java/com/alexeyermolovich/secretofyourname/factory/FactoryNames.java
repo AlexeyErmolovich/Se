@@ -40,10 +40,11 @@ public class FactoryNames {
 
     public final static String FIELD_NAME = "name";
 
-    private final byte SEARCH_FOR_NAME = 0;
     private String[] searchFiels = new String[]{
             "available_name",
-            "middle_name_is_combined"
+            "middle_name_is_combined",
+            "badges",
+            "character_traits"
     };
 
     private JSONObject jsonNames;
@@ -330,15 +331,14 @@ public class FactoryNames {
                     JSONArray jsonArray = jsonNames.getJSONArray("names");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (jsonObject.has(searchFiels[searchType])) {
-                            JSONArray items = jsonObject.getJSONArray(searchFiels[searchType]);
-                            for (int j = 0; j < items.length(); j++) {
-                                String s = formatString(items.getString(j));
-                                if (s.contains(search)) {
-                                    subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
-                                    break;
-                                }
+                        if (jsonObject.has(FIELD_NAME) && searchType == 0) {
+                            boolean findName = isFindName(subscriber, jsonObject);
+                            if (findName) {
+                                continue;
                             }
+                        }
+                        if (jsonObject.has(searchFiels[searchType])) {
+                            getSearchData(subscriber, jsonObject);
                         }
                     }
                     subscriber.onCompleted();
@@ -349,6 +349,40 @@ public class FactoryNames {
                     }
                 }
             }
+
+            private void getSearchData(Subscriber<? super NameObject> subscriber, JSONObject jsonObject) throws JSONException {
+                String value = formatString(jsonObject.getString(searchFiels[searchType]));
+                int countMatches = 0;
+                String[] strings = getItems(search);
+                for (String s : strings) {
+                    if (value.contains(s)) {
+                        countMatches++;
+                    }
+                }
+                if (countMatches == strings.length) {
+                    subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
+                }
+
+            }
+
+            private boolean isFindName(Subscriber<? super NameObject> subscriber, JSONObject jsonObject) throws JSONException {
+                boolean findName = false;
+                String name = formatString(jsonObject.getString(FIELD_NAME));
+                String[] items = getItems(search);
+                for (String s : items) {
+                    if (name.contains(s)) {
+                        findName = true;
+                        subscriber.onNext(gson.fromJson(jsonObject.toString(), NameObject.class));
+                        break;
+                    }
+                }
+                return findName;
+            }
+
+            private String[] getItems(String value) {
+                String divider = ",";
+                return value.split(divider);
+            }
         });
 
         nameObjectObservable.subscribe(initSubscriberSearch());
@@ -356,9 +390,10 @@ public class FactoryNames {
 
     private String formatString(String s) {
         String res = null;
-        res = s.replace("Ё", "Е");
+        res = s.toUpperCase();
+        res = res.replace("Ё", "Е");
         res = res.replace(" ", "");
-        return res.toUpperCase();
+        return res;
     }
 
     private Subscriber<? super NameObject> initSubscriberSearch() {
@@ -366,6 +401,12 @@ public class FactoryNames {
             @Override
             public void onCompleted() {
                 Log.d(TAG, "onCompleted search");
+                Collections.sort(listSearch, new Comparator<NameObject>() {
+                    @Override
+                    public int compare(NameObject o1, NameObject o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
                 if (onSearchDataListener != null) {
                     onSearchDataListener.onSearchResult(true);
                 }
@@ -383,7 +424,8 @@ public class FactoryNames {
             @Override
             public void onNext(NameObject object) {
                 Log.d("TEST", object.getName());
-                listSearch.add(object);
+                if (!listSearch.contains(object))
+                    listSearch.add(object);
             }
         };
     }
