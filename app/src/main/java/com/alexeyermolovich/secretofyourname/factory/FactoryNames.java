@@ -303,7 +303,7 @@ public class FactoryNames {
     public String showString(String string) {
         if (string == null)
             return null;
-        return string.replace(string.substring(0, 1), string.substring(0, 1).toUpperCase());
+        return string.replaceFirst(string.substring(0, 1), string.substring(0, 1).toUpperCase());
     }
     /*End Load Name*/
 
