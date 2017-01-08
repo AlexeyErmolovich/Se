@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,18 +34,15 @@ public class FragmentTabSearch extends FragmentTabAbstract
         TextWatcher, FactoryNames.OnSearchDataListener {
 
     private TextView textWarning;
-    private Spinner spinner;
     private EditText editTextSearch;
     private ListViewCompat listView;
     private ListDataAdapter listDataAdapter;
-    private ArrayAdapter<CharSequence> adapterSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         listDataAdapter = new ListDataAdapter(getCore().getApplicationContext(), new ArrayList<NameObject>());
-        adapterSpinner = ArrayAdapter.createFromResource(getCore().getApplicationContext(), R.array.search, android.R.layout.simple_spinner_item);
     }
 
     @Nullable
@@ -55,9 +51,6 @@ public class FragmentTabSearch extends FragmentTabAbstract
         View view = inflater.inflate(R.layout.fragment_tab_search, container, false);
 
         textWarning = (TextView) view.findViewById(R.id.textWarning);
-
-        spinner = (Spinner) view.findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
 
         editTextSearch = (EditText) view.findViewById(R.id.editTextSearch);
         editTextSearch.addTextChangedListener(this);
@@ -97,7 +90,7 @@ public class FragmentTabSearch extends FragmentTabAbstract
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        getCore().getFactoryNames().loadDataSearch(editTextSearch.getText().toString(), (byte) spinner.getSelectedItemPosition());
+        getCore().getFactoryNames().loadDataSearch(editTextSearch.getText().toString());
     }
 
     @Override
@@ -108,7 +101,7 @@ public class FragmentTabSearch extends FragmentTabAbstract
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            getCore().getFactoryNames().loadDataSearch(editTextSearch.getText().toString(), (byte) spinner.getSelectedItemPosition());
+            getCore().getFactoryNames().loadDataSearch(editTextSearch.getText().toString());
             return true;
         }
         return false;

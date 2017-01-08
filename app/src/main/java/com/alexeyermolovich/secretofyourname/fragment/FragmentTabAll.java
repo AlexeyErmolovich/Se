@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alexeyermolovich.secretofyourname.R;
@@ -29,8 +28,6 @@ public class FragmentTabAll extends FragmentTabAbstract
 
     private ExpandableListView listView;
     private ListAllExpandableAdapter allExpandableAdapter;
-    private RelativeLayout containerCount;
-    private TextView textViewCount;
     private TextView textWarning;
 
     @Override
@@ -49,8 +46,6 @@ public class FragmentTabAll extends FragmentTabAbstract
         listView.setAdapter(allExpandableAdapter);
         listView.setOnChildClickListener(this);
 
-        this.containerCount = (RelativeLayout) view.findViewById(R.id.containerCount);
-        this.textViewCount = (TextView) view.findViewById(R.id.textViewCount);
         this.textWarning = (TextView) view.findViewById(R.id.textWarning);
 
         getCore().getFactoryNames().setOnGetNameListListener(this);
@@ -65,8 +60,6 @@ public class FragmentTabAll extends FragmentTabAbstract
         allExpandableAdapter.getListChild().clear();
         List<NameObject> listNames = getCore().getFactoryNames().getListNames();
         if (listNames != null && listNames.size() != allExpandableAdapter.getAllCount()) {
-            containerCount.setVisibility(View.VISIBLE);
-            textViewCount.setText(String.valueOf(listNames.size()));
             textWarning.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundMain);
 
@@ -86,11 +79,7 @@ public class FragmentTabAll extends FragmentTabAbstract
             allExpandableAdapter.notifyDataSetChanged();
         } else if (listNames == null) {
             textWarning.setVisibility(View.VISIBLE);
-            containerCount.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundEmpty);
-        }
-        if (listNames != null) {
-            textViewCount.setText(String.valueOf(listNames.size()));
         }
     }
 
@@ -102,17 +91,13 @@ public class FragmentTabAll extends FragmentTabAbstract
             allExpandableAdapter.getListGroup().clear();
             allExpandableAdapter.getListChild().clear();
             textWarning.setVisibility(View.VISIBLE);
-            containerCount.setVisibility(View.GONE);
             listView.setBackgroundResource(R.color.colorBackgroundEmpty);
         }
     }
 
     @Override
     public void onGetCountNames(int count) {
-        if (count != 0) {
-            containerCount.setVisibility(View.VISIBLE);
-            textViewCount.setText(String.valueOf(count));
-        }
+
     }
 
     @Override

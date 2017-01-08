@@ -312,10 +312,10 @@ public class FactoryNames {
         return this.listSearch;
     }
 
-    public void loadDataSearch(String search, byte searchType) {
+    public void loadDataSearch(String search) {
         listSearch.clear();
         if (search != null && search.length() != 0) {
-            searchData(formatString(search), searchType);
+            searchData(formatString(search), (byte) 0);
         } else {
             if (onSearchDataListener != null) {
                 onSearchDataListener.onSearchResult(false);

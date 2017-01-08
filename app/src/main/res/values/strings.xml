@@ -34,7 +34,7 @@
     <string name="text_title_successful_day">Наиболее удачный день</string>
     <string name="text_title_celebrities">Знаменитые люди с этим именем</string>
 
-    <string name="text_search">Найти</string>
+    <string name="text_search">Имя</string>
 
     <string-array name="search">
         <item>По имени</item>
