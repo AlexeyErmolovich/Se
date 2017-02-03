@@ -13,9 +13,12 @@ import com.alexeyermolovich.secretofyourname.adapter.PageTabAdapter;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabAll;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabFavorites;
 import com.alexeyermolovich.secretofyourname.fragment.FragmentTabSearch;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2813036344877124~6081600895");
+        Fabric.with(this, new Crashlytics());
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3736883474770313~6531803784");
 
         adView = (AdView)this.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder() .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
